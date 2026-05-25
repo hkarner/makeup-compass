@@ -8,11 +8,9 @@ sys.path.insert(0, os.path.dirname(__file__))
 from logic import build_profile
 from seo import set_page_meta, inject_jsonld
 from about_page import render_about
+from welcome_page import render_welcome
 
-
-
-
-# ── MUST be first ─────────────────────────────────────────────────────────────
+# ── MUST be first st. call ────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Makeup Compass",
     page_icon="🧭",
@@ -21,7 +19,7 @@ st.set_page_config(
 
 # ── SEO / GEO setup ───────────────────────────────────────────────────────────
 set_page_meta()
-inject_jsonld()
+inject_jsonld()  # injects JSON-LD structured data for AI tool indexing
 
 # ── Navigation ────────────────────────────────────────────────────────────────
 page = st.sidebar.radio(
@@ -29,20 +27,20 @@ page = st.sidebar.radio(
     options=["💄 Quiz", "📖 About & Methodology"],
     label_visibility="collapsed"
 )
+
 if page == "📖 About & Methodology":
     render_about()
-    st.stop() # don't render the quiz on the About page
+    st.stop()  # don't render the quiz on the About page
 
-st.title("🧭 Makeup Compass")
-st.caption(
-    "Answer 7 quick questions about your features and get a personalized "
-    "makeup guide — products described by format, finish, and shade direction, "
-    "not specific SKUs, so it stays useful no matter what's on the shelves."
-
-)
-st.divider()
+# ── Welcome screen ────────────────────────────────────────────────────────────
+if not st.session_state.get("started", False):
+    render_welcome()
+    st.stop()
 
 # ── Quiz ─────────────────────────────────────────────────────────────────────
+st.title("🧭 Makeup Compass")
+st.divider()
+
 with st.form("quiz"):
     st.subheader("About You")
 
@@ -89,10 +87,10 @@ with st.form("quiz"):
         "4. Eye shape",
         options=["deep-set", "hooded", "almond", "monolid", "downturned", "protruding"],
         format_func=lambda x: {
-            "deep-set": "Deep-set — my eyes sit back in the socket; the brow bone casts shadow on the lid",
-            "hooded": "Hooded — the brow bone partially covers the lid when my eyes are open",
-            "almond": "Almond — my eyes are roughly almond-shaped with visible lid crease",
-            "monolid": "Monolid — I have little or no visible lid crease",
+            "deep-set":   "Deep-set — my eyes sit back in the socket; the brow bone casts shadow on the lid",
+            "hooded":     "Hooded — the brow bone partially covers the lid when my eyes are open",
+            "almond":     "Almond — my eyes are roughly almond-shaped with visible lid crease",
+            "monolid":    "Monolid — I have little or no visible lid crease",
             "downturned": "Downturned — the outer corners angle slightly downward",
             "protruding": "Protruding — my lids appear to project forward"
         }[x]
@@ -102,14 +100,14 @@ with st.form("quiz"):
         "5. Dark circles?",
         options=["none", "mild", "blue-purple", "brown", "mixed"],
         format_func=lambda x: {
-            "none": "None",
-            "mild": "Mild — barely noticeable",
+            "none":        "None",
+            "mild":        "Mild — barely noticeable",
             "blue-purple": "Moderate — blue or purple tone",
-            "brown": "Moderate — brown tone",
-            "mixed": "Mixed — blue/purple at inner corner, brown underneath"
+            "brown":       "Moderate — brown tone",
+            "mixed":       "Mixed — blue/purple at inner corner, brown underneath"
         }[x]
     )
-    
+
     st.markdown(
         '<p style="font-size: 0.875rem; font-weight: 400; margin-bottom: 0.25rem;">6. Overall contrast level</p>',
         unsafe_allow_html=True
@@ -136,14 +134,13 @@ with st.form("quiz"):
         "7. Lip type",
         options=["even", "two-toned", "thin", "full", "thin-two-toned"],
         format_func=lambda x: {
-            "even": "Even-toned — my lips are roughly one color",
-            "two-toned": "Two-toned — darker edges, lighter or pinker center",
-            "thin": "Thin — I have thinner lips (even-toned)",
-            "full": "Full — I have fuller lips (even-toned)",
+            "even":           "Even-toned — my lips are roughly one color",
+            "two-toned":      "Two-toned — darker edges, lighter or pinker center",
+            "thin":           "Thin — I have thinner lips (even-toned)",
+            "full":           "Full — I have fuller lips (even-toned)",
             "thin-two-toned": "Thin and two-toned"
         }[x]
     )
-
 
     submitted = st.form_submit_button("Get My Guide →", use_container_width=True)
 
@@ -170,7 +167,7 @@ if submitted:
     the unexpected thing is exactly right. Sometimes it isn't. That's what swatching is for.*
     """)
 
-# --- Your Profile summary ---
+    # --- Your Profile summary ---
     contrast_labels = {
         "low":         ("Low contrast", "Your hair, eyes, and skin are close in depth. Soft, blended looks work best — heavy pigment can overwhelm your natural harmony."),
         "medium":      ("Medium contrast", "Moderate difference between your features. You have flexibility — you can do soft everyday looks or build up for events."),
@@ -181,7 +178,7 @@ if submitted:
 
     st.markdown("### ✨ Your Profile")
     st.markdown(f"""
-    **Contrast:** {contrast_label}
+    **Contrast:** {contrast_label}  
     {contrast_desc}
 
     **Undertone:** {undertone.replace("-", " ").title()} · **Skin depth:** {depth}/5 · **Eye shape:** {eye_shape.title()}
