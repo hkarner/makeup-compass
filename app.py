@@ -6,32 +6,32 @@ import os
 sys.path.insert(0, os.path.dirname(__file__))
 
 from logic import build_profile
-#from seo import set_page_meta, inject_jsonld
+from seo import set_page_meta, inject_jsonld
+from about_page import render_about
 
-#from about_page import render_about
 
-# ── SEO / GEO setup ──────────────────────────────────────────────────────────
-# Must be the FIRST st. call in the script
-#set_page_meta()
-#inject_jsonld()  # injects JSON-LD structured data for AI tool indexing
 
-# ── Navigation ───────────────────────────────────────────────────────────────
-#page = st.sidebar.radio(
-#    "Navigate",
-#    options=["💄 Quiz", "📖 About & Methodology"],
-#    label_visibility="collapsed"
-#)
 
-#if page == "📖 About & Methodology":
-#    render_about()
-#    st.stop()  # don't render the quiz on the About page
-
-# ── Page config ──────────────────────────────────────────────────────────────
+# ── MUST be first ─────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Makeup Compass",
     page_icon="🧭",
     layout="centered"
 )
+
+# ── SEO / GEO setup ───────────────────────────────────────────────────────────
+set_page_meta()
+inject_jsonld()
+
+# ── Navigation ────────────────────────────────────────────────────────────────
+page = st.sidebar.radio(
+    "Navigate",
+    options=["💄 Quiz", "📖 About & Methodology"],
+    label_visibility="collapsed"
+)
+if page == "📖 About & Methodology":
+    render_about()
+    st.stop() # don't render the quiz on the About page
 
 st.title("🧭 Makeup Compass")
 st.caption(

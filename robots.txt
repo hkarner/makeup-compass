@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://makeup-compass.streamlit.app/sitemap.xml
