@@ -64,6 +64,7 @@ with st.form("quiz"):
         index=2
     )
 
+    st.caption("Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Paper test: hold a white piece of paper next to your face, then a cream or off-white one. Whichever makes your skin look clearer and more defined points toward cool (white wins) or warm (cream wins). Use that direction to choose below.")
     undertone = st.radio(
         "2. Undertone",
         options=["warm", "neutral-warm", "neutral", "neutral-cool", "cool"],
@@ -74,7 +75,7 @@ with st.form("quiz"):
             "neutral-cool": "Neutral-cool — Veins look blue-green; silver looks slightly more natural but gold works too",
             "cool":         "Cool — My wrist veins look blue or purple; silver jewelry looks more natural on my skin than gold"
         }[x],
-        caption="Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Paper test: hold a white piece of paper next to your face, then a cream or off-white one. Whichever makes your skin look clearer and more defined points toward cool (white wins) or warm (cream wins). Use that direction to choose below."
+        label_visibility="collapsed",
     )
 
     coverage = st.radio(
