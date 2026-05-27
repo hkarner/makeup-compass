@@ -64,11 +64,6 @@ with st.form("quiz"):
         index=2
     )
 
-    st.markdown(
-        '<p style="font-size: 0.875rem; font-weight: 400; margin-bottom: 0.25rem;">2. Undertone</p>',
-        unsafe_allow_html=True
-    )
-    st.caption("Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Paper test: hold a white piece of paper next to your face, then a cream or off-white one. Whichever makes your skin look clearer and more defined points toward cool (white wins) or warm (cream wins). Use that direction to choose below.")
     undertone = st.radio(
         "2. Undertone",
         options=["warm", "neutral-warm", "neutral", "neutral-cool", "cool"],
@@ -79,7 +74,7 @@ with st.form("quiz"):
             "neutral-cool": "Neutral-cool — Veins look blue-green; silver looks slightly more natural but gold works too",
             "cool":         "Cool — My wrist veins look blue or purple; silver jewelry looks more natural on my skin than gold"
         }[x],
-        label_visibility="collapsed",
+        caption="Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Paper test: hold a white piece of paper next to your face, then a cream or off-white one. Whichever makes your skin look clearer and more defined points toward cool (white wins) or warm (cream wins). Use that direction to choose below."
     )
 
     coverage = st.radio(
@@ -122,10 +117,6 @@ with st.form("quiz"):
         help="Check in natural light. If the shadow under your eye looks bluish or purplish — especially near the inner corner — that's a clue toward blue-purple. If it looks more brown or tan-coloured, that's a clue toward brown. If you're seeing both in different spots, mixed is the right pick. Not sure at all? Mixed is a safe default."
     )
 
-    st.markdown(
-        '<p style="font-size: 0.875rem; font-weight: 400; margin-bottom: 0.25rem;">6. Overall contrast level</p>',
-        unsafe_allow_html=True
-    )
     st.info(
         "💡 Contrast = the gap between your skin depth and your feature depth — not just how dark your features are. "
         "Dark hair + dark eyes on medium skin = **Medium or Medium-High**, not High. "
@@ -142,7 +133,6 @@ with st.form("quiz"):
             "high":        "High — Stark light-dark opposition. Typically fair/light skin with very dark hair and eyes.",
         }[x],
         index=1,
-        label_visibility="collapsed",
         help="💡 Look at a no-makeup photo in natural light. It's about the gap between how light your skin is and how dark your features are — not just whether your features are dark. Not sure? Medium is the most common starting point.",
     )
 
@@ -220,7 +210,7 @@ if st.session_state.get("submitted"):
 
     # ── Sub-questions (shown once, between form submit and results) ────────────
     if needs_subq and not st.session_state.get("subq_done"):
-        st.components.v1.html("<script>window.scrollTo(0,0)</script>", height=0)
+        st.components.v1.html("<script>window.parent.scrollTo(0,0);</script>", height=0)
         st.divider()
         st.subheader("One more thing...")
         st.caption(
@@ -310,7 +300,7 @@ if st.session_state.get("submitted"):
     lash_color = inputs.get("lash_color", "dark")
     lash_density = inputs.get("lash_density", "average")
 
-    st.components.v1.html("<script>window.scrollTo(0,0)</script>", height=0)
+    st.components.v1.html("<script>window.parent.scrollTo(0,0);</script>", height=0)
     st.divider()
     st.header("Your Personalized Makeup Guide")
     st.markdown("""
