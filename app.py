@@ -64,7 +64,11 @@ with st.form("quiz"):
         index=2
     )
 
-    st.caption("Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Jewelry is a secondary clue — only helpful if you strongly feel one metal looks better *on your skin* (not just which you like wearing). Rose gold lovers or people who wear both: skip the jewelry cue and use the vein test or try the white/cream test: hold a white piece of paper next to your face, then an off-white or cream one — whichever one makes your skin look a little clearer and brighter, with your features looking more defined, is pointing you in the right direction. If one seems to make your skin look slightly flat, grey, or uneven by comparison — that's a useful clue too. Try the other one.")
+    st.markdown(
+        '<p style="font-size: 0.875rem; font-weight: 400; margin-bottom: 0.25rem;">2. Undertone</p>',
+        unsafe_allow_html=True
+    )
+    st.caption("Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Paper test: hold a white piece of paper next to your face, then a cream or off-white one. Whichever makes your skin look clearer and more defined points toward cool (white wins) or warm (cream wins). Use that direction to choose below.")
     undertone = st.radio(
         "2. Undertone",
         options=["warm", "neutral-warm", "neutral", "neutral-cool", "cool"],
@@ -75,6 +79,7 @@ with st.form("quiz"):
             "neutral-cool": "Neutral-cool — Veins look blue-green; silver looks slightly more natural but gold works too",
             "cool":         "Cool — My wrist veins look blue or purple; silver jewelry looks more natural on my skin than gold"
         }[x],
+        label_visibility="collapsed",
     )
 
     coverage = st.radio(
@@ -121,13 +126,11 @@ with st.form("quiz"):
         '<p style="font-size: 0.875rem; font-weight: 400; margin-bottom: 0.25rem;">6. Overall contrast level</p>',
         unsafe_allow_html=True
     )
-    st.caption(
-        "Think about the difference between your skin tone and your hair/eyes — not just how dark your features are on their own. "
-        "Dark hair and dark eyes alone don't equal high contrast; it's the gap between your skin depth and your feature depth that counts."
-    )
     st.info(
-        "💡 If you have dark hair and dark eyes but medium skin, you're likely **Medium or Medium-High** — not High. "
-        "High contrast requires a stark light-dark opposition between skin tone AND features, not just dark features alone."
+        "💡 Contrast = the gap between your skin depth and your feature depth — not just how dark your features are. "
+        "Dark hair + dark eyes on medium skin = **Medium or Medium-High**, not High. "
+        "**Medium:** a noticeable but soft difference. **Medium-High:** features read clearly against your skin, but it's not a stark jump. "
+        "**High:** your skin and features are at opposite ends — e.g. fair skin + very dark hair and eyes, or deep skin + very light eyes."
     )
     contrast = st.radio(
         "6. Overall contrast level",
@@ -145,13 +148,14 @@ with st.form("quiz"):
 
     lip_type = st.radio(
         "7. Lip type",
-        options=["even", "two-toned", "thin", "full", "thin-two-toned"],
+        options=["even", "two-toned", "thin", "full", "thin-two-toned", "full-two-toned"],
         format_func=lambda x: {
-            "even":           "Even-toned — my lips are roughly one color",
-            "two-toned":      "Two-toned — darker edges, lighter or pinker center",
-            "thin":           "Thin — I have thinner lips (even-toned)",
-            "full":           "Full — I have fuller lips (even-toned)",
-            "thin-two-toned": "Thin and two-toned"
+            "even":            "Even-toned — my lips are roughly one color",
+            "two-toned":       "Two-toned — medium or full lips with darker edges, lighter or pinker center",
+            "thin":            "Thin — I have thinner lips (even-toned)",
+            "full":            "Full — I have fuller lips (even-toned)",
+            "thin-two-toned":  "Thin and two-toned — thinner lips with darker edges",
+            "full-two-toned":  "Full and two-toned — fuller lips with darker edges, lighter center"
         }[x]
     )
 
@@ -216,6 +220,7 @@ if st.session_state.get("submitted"):
 
     # ── Sub-questions (shown once, between form submit and results) ────────────
     if needs_subq and not st.session_state.get("subq_done"):
+        st.components.v1.html("<script>window.scrollTo(0,0)</script>", height=0)
         st.divider()
         st.subheader("One more thing...")
         st.caption(
@@ -305,6 +310,7 @@ if st.session_state.get("submitted"):
     lash_color = inputs.get("lash_color", "dark")
     lash_density = inputs.get("lash_density", "average")
 
+    st.components.v1.html("<script>window.scrollTo(0,0)</script>", height=0)
     st.divider()
     st.header("Your Personalized Makeup Guide")
     st.markdown("""
@@ -378,9 +384,9 @@ can help you screen products, interpret swatch images, and get a second opinion 
 You only need to paste it once per conversation. Save the file somewhere easy to find.
 
 **Want it permanent?** If you have a paid plan, save it so the AI always knows your profile:
-- 🟣 **Claude Pro/Max/Team** → [Claude Projects](https://claude.ai/projects) — upload the .txt file as project knowledge
-- 🟢 **ChatGPT Plus** → [Custom Instructions](https://chatgpt.com) or [GPT Builder](https://chatgpt.com/gpts/editor)
-- 🔵 **Gemini Advanced** → [Gemini Gems](https://gemini.google.com/gems)
+- 🟣 **Claude Pro/Max/Team** → [Claude Projects](https://claude.ai/projects) — create a project and upload the .txt as project knowledge ([how-to video](https://www.youtube.com/watch?v=GJ5jTgcbRHA))
+- 🟢 **ChatGPT Plus** → [ChatGPT Skills](https://help.openai.com/en/articles/20001066-skills-in-chatgpt) — paste your profile as a custom instruction ([how-to video](https://www.youtube.com/watch?v=QqwNue_KL-4))
+- 🔵 **Gemini Advanced** → [Gemini Gems](https://gemini.google.com/gems) — create a Gem and paste your profile as context
         """)
 
         st.markdown("---")

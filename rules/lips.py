@@ -25,6 +25,12 @@ def get_lips(undertone, lip_type):
             "Any matte, dark, or opaque product will flatten your natural gradient and make lips look smaller simultaneously. "
             "Best formats: tinted lip oil, sheer gloss stain."
         ),
+        "full-two-toned": (
+            "You have the volume to carry a range of formats, but the gradient still needs breathing room. "
+            "Avoid fully opaque formulas that erase the natural variation — the two-tone is part of your look. "
+            "Best formats: gloss stain, buildable sheer lipstick, tinted lip oil. "
+            "You can go slightly deeper in shade than thin lips allow."
+        ),
     }
 
     shade_rules = {
