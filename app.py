@@ -9,6 +9,8 @@ from logic import build_profile
 from seo import set_page_meta, inject_jsonld
 from about_page import render_about
 from welcome_page import render_welcome
+from makeup_101 import render_makeup_101
+from skill_page import build_skill_page
 
 # ── MUST be first st. call ────────────────────────────────────────────────────
 st.set_page_config(
@@ -24,9 +26,13 @@ inject_jsonld()  # injects JSON-LD structured data for AI tool indexing
 # ── Navigation ────────────────────────────────────────────────────────────────
 page = st.sidebar.radio(
     "Navigate",
-    options=["💄 Quiz", "📖 About & Methodology"],
+    options=["💄 Quiz", "📚 Makeup 101", "📖 About & Methodology"],
     label_visibility="collapsed"
 )
+
+if page == "📚 Makeup 101":
+    render_makeup_101()
+    st.stop()
 
 if page == "📖 About & Methodology":
     render_about()
@@ -43,6 +49,7 @@ st.divider()
 
 with st.form("quiz"):
     st.subheader("About You")
+    st.caption("💡 Before you start: find a mirror near a window or step outside. Natural light gives you the most accurate read on your skin tone, vein color, and dark circles.")
 
     depth = st.radio(
         "1. Skin tone depth",
@@ -57,17 +64,17 @@ with st.form("quiz"):
         index=2
     )
 
+    st.caption("Check the inside of your wrist in natural light. Veins that look green = warm. Blue or purple = cool. Can't tell? You're probably neutral. Jewelry is a secondary clue — only helpful if you strongly feel one metal looks better *on your skin* (not just which you like wearing). Rose gold lovers or people who wear both: skip the jewelry cue and use the vein test or try the white/cream test: hold a white piece of paper next to your face, then an off-white or cream one — whichever one makes your skin look a little clearer and brighter, with your features looking more defined, is pointing you in the right direction. If one seems to make your skin look slightly flat, grey, or uneven by comparison — that's a useful clue too. Try the other one.")
     undertone = st.radio(
         "2. Undertone",
         options=["warm", "neutral-warm", "neutral", "neutral-cool", "cool"],
         format_func=lambda x: {
-            "warm":         "Warm — My wrist veins look green; gold jewelry flatters me more than silver",
-            "neutral-warm": "Neutral-warm — Veins look blue-green; I lean toward gold but silver works too",
-            "neutral":      "Neutral — Can't tell if veins are blue or green; gold and silver both look good",
-            "neutral-cool": "Neutral-cool — Veins look blue-green; I lean toward silver but gold works too",
-            "cool":         "Cool — My wrist veins look blue or purple; silver jewelry flatters me more than gold"
+            "warm":         "Warm — My wrist veins look green; gold jewelry looks more natural on my skin than silver",
+            "neutral-warm": "Neutral-warm — Veins look blue-green; gold looks slightly more natural but silver works too",
+            "neutral":      "Neutral — Can't tell if veins are blue or green; gold and silver look equally natural",
+            "neutral-cool": "Neutral-cool — Veins look blue-green; silver looks slightly more natural but gold works too",
+            "cool":         "Cool — My wrist veins look blue or purple; silver jewelry looks more natural on my skin than gold"
         }[x],
-        help="Check the inside of your wrist in natural light for the vein test."
     )
 
     coverage = st.radio(
@@ -93,7 +100,8 @@ with st.form("quiz"):
             "monolid":    "Monolid — I have little or no visible lid crease",
             "downturned": "Downturned — the outer corners angle slightly downward",
             "protruding": "Protruding — my lids appear to project forward"
-        }[x]
+        }[x],
+        help="Not sure? Look straight ahead in a mirror. If your brow bone overshadows your lid when your eyes are open: hooded. If you can see your whole lid and a clear crease: almond. No crease at all: monolid. Outer corners dip downward: downturned. If you're unsure, almond is the most common."
     )
 
     dark_circles = st.radio(
@@ -105,7 +113,8 @@ with st.form("quiz"):
             "blue-purple": "Moderate — blue or purple tone",
             "brown":       "Moderate — brown tone",
             "mixed":       "Mixed — blue/purple at inner corner, brown underneath"
-        }[x]
+        }[x],
+        help="Check in natural light. If the shadow under your eye looks bluish or purplish — especially near the inner corner — that's a clue toward blue-purple. If it looks more brown or tan-coloured, that's a clue toward brown. If you're seeing both in different spots, mixed is the right pick. Not sure at all? Mixed is a safe default."
     )
 
     st.markdown(
@@ -113,21 +122,25 @@ with st.form("quiz"):
         unsafe_allow_html=True
     )
     st.caption(
-        "Contrast = how different your hair and eye color are from your skin in terms of depth (light vs. dark). "
-        "Not about color — purely about how light or dark your features are compared to your skin."
+        "Think about the difference between your skin tone and your hair/eyes — not just how dark your features are on their own. "
+        "Dark hair and dark eyes alone don't equal high contrast; it's the gap between your skin depth and your feature depth that counts."
+    )
+    st.info(
+        "💡 If you have dark hair and dark eyes but medium skin, you're likely **Medium or Medium-High** — not High. "
+        "High contrast requires a stark light-dark opposition between skin tone AND features, not just dark features alone."
     )
     contrast = st.radio(
         "6. Overall contrast level",
         options=["low", "medium", "medium-high", "high"],
         format_func=lambda x: {
-            "low":         "Low — My hair, eyes, and skin are all similar in depth",
-            "medium":      "Medium — Some difference between features, but nothing stark. Dark eyes or hair, but medium skin.",
-            "medium-high": "Medium-high — Noticeably darker hair/eyes against my skin. My features read clearly from across a room.",
-            "high":        "High — Very dark hair and eyes against light or very fair skin",
+            "low":         "Low — Hair, eyes, and skin are all close in depth (e.g., light skin + light hair + light eyes)",
+            "medium":      "Medium — A noticeable but not stark difference. Medium skin + medium-dark features.",
+            "medium-high": "Medium-high — Clear difference between skin and features, but skin is medium. Dark hair/eyes don't automatically mean high contrast.",
+            "high":        "High — Stark light-dark opposition. Typically fair/light skin with very dark hair and eyes.",
         }[x],
         index=1,
         label_visibility="collapsed",
-        help="💡 Look at a no-makeup photo in natural light. Does your face have a stark light/dark pattern? High. Features blend together? Low. Something in between? Medium.",
+        help="💡 Look at a no-makeup photo in natural light. It's about the gap between how light your skin is and how dark your features are — not just whether your features are dark. Not sure? Medium is the most common starting point.",
     )
 
     lip_type = st.radio(
@@ -142,19 +155,155 @@ with st.form("quiz"):
         }[x]
     )
 
+    lash_curl = st.radio(
+        "8. Lash curl",
+        options=["straight", "wavy", "curly"],
+        format_func=lambda x: {
+            "straight": "Straight — my lashes point outward or slightly downward with no natural curve",
+            "wavy":     "Slightly wavy — some natural shape, but not dramatically curled",
+            "curly":    "Curly — my lashes have a natural upward curl",
+        }[x],
+        index=1,
+        help="Look at your lashes without mascara. Do they point straight out, or do they curve upward naturally?"
+    )
+
+    lash_color = st.radio(
+        "9. Lash color",
+        options=["dark", "light"],
+        format_func=lambda x: {
+            "dark":  "Dark — my lashes are naturally brown, black, or dark brown",
+            "light": "Light — my lashes are naturally blonde, red, or light brown",
+        }[x],
+        help="Look at your lashes without mascara in natural light."
+    )
+
+    lash_density = st.radio(
+        "10. Lash density",
+        options=["sparse", "average", "full"],
+        format_func=lambda x: {
+            "sparse":  "Sparse — my lashes are fine or thin; I can see gaps",
+            "average": "Average — moderate density, neither especially full nor sparse",
+            "full":    "Full — my lashes are naturally thick or plentiful",
+        }[x],
+        index=1,
+        help="Look at your lashes without mascara. How thick or full are they naturally?"
+    )
+
     submitted = st.form_submit_button("Get My Guide →", use_container_width=True)
 
 # ── Results ───────────────────────────────────────────────────────────────────
 if submitted:
-    profile = build_profile(
-        depth=depth,
-        undertone=undertone,
-        eye_shape=eye_shape,
-        contrast=contrast,
-        lip_type=lip_type,
-        coverage=coverage,
-        dark_circles=dark_circles
+    # Fresh submission — save inputs and reset sub-question state
+    st.session_state["quiz_inputs"] = dict(
+        depth=depth, undertone=undertone, eye_shape=eye_shape,
+        contrast=contrast, lip_type=lip_type, coverage=coverage,
+        dark_circles=dark_circles,
+        lash_curl=lash_curl, lash_color=lash_color, lash_density=lash_density
     )
+    st.session_state["submitted"] = True
+    st.session_state["subq_done"] = False
+    st.session_state["profile"] = None  # clear any previous profile
+
+if st.session_state.get("submitted"):
+    inputs = st.session_state["quiz_inputs"]
+    eye_shape_val = inputs["eye_shape"]
+    dark_circles_val = inputs["dark_circles"]
+
+    needs_subq = (
+        eye_shape_val in ("deep-set", "hooded")
+        or dark_circles_val not in ("none", "mild")
+    )
+
+    # ── Sub-questions (shown once, between form submit and results) ────────────
+    if needs_subq and not st.session_state.get("subq_done"):
+        st.divider()
+        st.subheader("One more thing...")
+        st.caption(
+            "These quick follow-ups help us give you more precise placement advice "
+            "for your specific eye anatomy."
+        )
+
+        deep_set_subtype = "uniform"
+        hooded_subtype = "outer"
+        dark_circle_location = "everywhere"
+
+        if eye_shape_val == "deep-set":
+            deep_set_subtype = st.radio(
+                "Where does your eye feel deepest or most shadowed?",
+                options=["uniform", "inner", "outer"],
+                format_func=lambda x: {
+                    "uniform": "Uniformly set back — the whole lid feels shadowed under the brow bone",
+                    "inner":   "Inner corner — most cavernous near the nose (deepest shadow zone near the bridge)",
+                    "outer":   "Outer corner — most covered by the lid fold at the outer edge",
+                }[x],
+                help="Look straight ahead in a mirror. Where does your eye feel most recessed or shadowed — evenly across the lid, or concentrated at one end?"
+            )
+
+        if eye_shape_val == "hooded":
+            hooded_subtype = st.radio(
+                "How much of your lid is covered by the fold?",
+                options=["outer", "full"],
+                format_func=lambda x: {
+                    "outer": "Just the outer corner — my center and inner lid are still visible when eyes are open",
+                    "full":  "Most or all of my lid — very little lid space shows when eyes are open",
+                }[x],
+                help="Look straight ahead with eyes open. If you can see your lid clearly in the center: outer hooding. If barely any lid is visible: full hooding."
+            )
+
+        if dark_circles_val not in ("none", "mild"):
+            dark_circle_location = st.radio(
+                "Where are your dark circles most noticeable?",
+                options=["inner", "full", "outer", "everywhere"],
+                format_func=lambda x: {
+                    "inner":      "Inner corner — darkest near the nose",
+                    "full":       "Full undereye — evenly spread across the whole area",
+                    "outer":      "Outer corner — darkest toward the outside",
+                    "everywhere": "Everywhere equally",
+                }[x],
+                help="Check in natural light. Does the shadow concentrate near your nose, sit evenly, or sit more toward the outer corner?"
+            )
+
+        if st.button("View My Results →", use_container_width=True):
+            st.session_state["deep_set_subtype"] = deep_set_subtype
+            st.session_state["hooded_subtype"] = hooded_subtype
+            st.session_state["dark_circle_location"] = dark_circle_location
+            st.session_state["subq_done"] = True
+            st.rerun()
+
+        st.stop()
+
+    # ── Build profile (once, then cached in session state) ────────────────────
+    if st.session_state.get("profile") is None:
+        profile = build_profile(
+            depth=inputs["depth"],
+            undertone=inputs["undertone"],
+            eye_shape=inputs["eye_shape"],
+            contrast=inputs["contrast"],
+            lip_type=inputs["lip_type"],
+            coverage=inputs["coverage"],
+            dark_circles=inputs["dark_circles"],
+            deep_set_subtype=st.session_state.get("deep_set_subtype", "uniform"),
+            hooded_subtype=st.session_state.get("hooded_subtype", "outer"),
+            dark_circle_location=st.session_state.get("dark_circle_location", "everywhere"),
+            lash_curl=inputs.get("lash_curl", "wavy"),
+            lash_color=inputs.get("lash_color", "dark"),
+            lash_density=inputs.get("lash_density", "average"),
+        )
+        st.session_state["profile"] = profile
+    else:
+        profile = st.session_state["profile"]
+
+    # Restore display variables from session state
+    depth = inputs["depth"]
+    undertone = inputs["undertone"]
+    eye_shape = inputs["eye_shape"]
+    contrast = inputs["contrast"]
+    lip_type = inputs["lip_type"]
+    coverage = inputs["coverage"]
+    dark_circles = inputs["dark_circles"]
+    lash_curl = inputs.get("lash_curl", "wavy")
+    lash_color = inputs.get("lash_color", "dark")
+    lash_density = inputs.get("lash_density", "average")
 
     st.divider()
     st.header("Your Personalized Makeup Guide")
@@ -190,6 +339,7 @@ if submitted:
         ("🌙 Undereye", profile["undereye"]),
         ("🪮 Brows", profile["brows"]),
         ("👁️ Eyes", profile["eyes"]),
+        ("✨ Lashes & Mascara", profile["mascara"]),
         ("💋 Lips", profile["lips"]),
         ("🛍️ At the Store", profile["store"]),
     ]
@@ -209,3 +359,89 @@ if submitted:
         file_name="my_makeup_guide.txt",
         mime="text/plain"
     )
+
+    # AI Skill Page
+    with st.expander("💡 Use your profile with AI — get a downloadable skill page", expanded=False):
+        st.markdown("""
+**Take your profile further with AI**
+
+Download your Makeup Compass Skill Page — a plain-text file you can paste into any AI assistant
+(ChatGPT, Claude, Gemini, etc.) as context. The AI will understand your full makeup profile and
+can help you screen products, interpret swatch images, and get a second opinion on anything makeup-related.
+
+**How to use it:**
+1. Download the file and open it
+2. Copy all the text
+3. Paste it at the start of a new chat with your AI assistant of choice
+4. Ask your question — or upload a swatch image and ask: *"Based on my profile, would this work for me?"*
+
+You only need to paste it once per conversation. Save the file somewhere easy to find.
+
+**Want it permanent?** If you have a paid plan, save it so the AI always knows your profile:
+- 🟣 **Claude Pro/Max/Team** → [Claude Projects](https://claude.ai/projects) — upload the .txt file as project knowledge
+- 🟢 **ChatGPT Plus** → [Custom Instructions](https://chatgpt.com) or [GPT Builder](https://chatgpt.com/gpts/editor)
+- 🔵 **Gemini Advanced** → [Gemini Gems](https://gemini.google.com/gems)
+        """)
+
+        st.markdown("---")
+        st.markdown("**Optional: personalise further with your own products**")
+        st.caption(
+            "Adding products you’ve tried makes the AI’s recommendations much more specific to you. "
+            "Leave blank if you’re not sure yet — you can always edit the downloaded file."
+        )
+
+        works_for_me = st.text_area(
+            "Products that work for me",
+            placeholder="e.g. NARS Sheer Glow in Syracuse, Charlotte Tilbury Pillow Talk lip liner, Rare Beauty Soft Pinch blush in Joy...",
+            help="List any products — foundation, concealer, lip colour, brow pencil, anything — that you know look good on you. One per line or comma-separated."
+        )
+
+        doesnt_work_for_me = st.text_area(
+            "Products that haven’t worked for me",
+            placeholder="e.g. anything too pink-toned, full coverage foundations, matte lip formulas, cool-toned concealers...",
+            help="List products, shades, or whole categories that haven’t worked — too grey, too pink, too heavy, wrong undertone, etc."
+        )
+
+        st.markdown("---")
+        st.markdown("**Optional: get looks built from products you already own**")
+        st.caption(
+            "Paste the products you own by category. The AI will use this to suggest specific looks "
+            "using only what's in your kit — no shopping required. Leave blank to skip."
+        )
+
+        owned_products = st.text_area(
+            "Products I own",
+            placeholder=(
+                "Lips: NYX Lip IV Hydrating Gloss Stain in Blush Rush\n"
+                "Eyes: NYX Jumbo Eye Pencil in Frosting, Maybelline Color Tattoo Stix in I Am Cozy\n"
+                "Blush: NYX Butter Melt Blush in U Know Butta\n"
+                "Base: L'Oréal True Match Tinted Serum in 4.5-5.5 Rich Medium\n"
+                "Powder: L'Oréal True Match Powder in W7 Caramel Beige"
+            ),
+            help="List by category (Lips, Eyes, Blush, Base, Brows, Undereye, Powder). "
+                 "The AI will generate daytime and night-out looks using only these products.",
+            height=150
+        )
+
+        skill_text = build_skill_page(
+            depth=depth,
+            undertone=undertone,
+            eye_shape=eye_shape,
+            contrast=contrast,
+            lip_type=lip_type,
+            coverage=coverage,
+            dark_circles=dark_circles,
+            lash_curl=lash_curl,
+            lash_color=lash_color,
+            lash_density=lash_density,
+            works_for_me=works_for_me,
+            doesnt_work_for_me=doesnt_work_for_me,
+            owned_products=owned_products
+        )
+
+        st.download_button(
+            label="⬇️ Download my AI Skill Page",
+            data=skill_text,
+            file_name="my_makeup_skill_page.txt",
+            mime="text/plain"
+        )
