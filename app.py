@@ -44,6 +44,13 @@ if not st.session_state.get("started", False):
     st.stop()
 
 # ── Quiz ─────────────────────────────────────────────────────────────────────
+st.components.v1.html("""
+<script>
+    var el = window.parent.document.querySelector('.main');
+    if (el) el.scrollTop = 0;
+    window.parent.scrollTo(0, 0);
+</script>
+""", height=0)
 st.title("🧭 Makeup Compass")
 st.divider()
 
