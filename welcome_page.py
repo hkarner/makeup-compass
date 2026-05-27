@@ -15,6 +15,13 @@ def render_welcome():
     *Takes about 2 minutes. Your answers stay in your browser and are never stored.*
     """)
 
+    # ── Start Button — top position so no scroll offset on transition ─────────
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("Find My Direction →", use_container_width=True, type="primary"):
+            st.session_state.started = True
+            st.rerun()
+
     st.divider()
 
     # ── What You'll Get ───────────────────────────────────────────────────────
@@ -47,11 +54,3 @@ def render_welcome():
     """)
 
     st.caption("Not sure what undertone or contrast means? Open the 📚 Makeup 101 tab in the sidebar before you start.")
-
-    st.divider()
-
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("Find My Direction →", use_container_width=True, type="primary"):
-            st.session_state.started = True
-            st.rerun()
