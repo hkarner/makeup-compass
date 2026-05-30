@@ -19,10 +19,6 @@ def set_page_meta():
             )
         }
     )
-    st.markdown(
-        '<meta name="google-site-verification" content="dujeYJXZAYP3qNeKOmv_dOvHeazYyBf6TNtBwOhoeRU" />',
-        unsafe_allow_html=True
-    )
 
 
 def inject_jsonld():
