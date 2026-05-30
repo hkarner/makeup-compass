@@ -7,12 +7,12 @@ def render_welcome():
     If you've ever felt lost in the makeup aisle — overwhelmed by options,
     unsure what actually works *for your specific features* — this is for you.
 
-    Makeup Compass asks 7 short questions about your features and gives you a
-    personalized guide: what formats, finishes, and shade directions tend to work
-    for you — and why. No specific products, no brand pressure, no rules.
-    Just a clearer map.
+    Makeup Compass asks 10 questions about your features — plus a couple of short
+    follow-ups depending on your answers — and gives you a personalized guide:
+    what formats, finishes, and shade directions tend to work for you — and why.
+    No specific products, no brand pressure, no rules. Just a clearer map.
 
-    *Takes about 2 minutes. Your answers stay in your browser and are never stored.*
+    *Takes about 3–4 minutes. Your answers stay in your browser and are never stored.*
     """)
 
     # ── Start Button — top position so no scroll offset on transition ─────────
@@ -31,6 +31,7 @@ def render_welcome():
 
     - 🪮 **Brows** — format, shade, and what to avoid
     - 👁️ **Eyes** — technique and finish for your eye shape
+    - ✨ **Lashes & Mascara** — formula and technique for your lash type
     - 💋 **Lips** — format and shade family that works with your lip type
     - 🫧 **Base** — coverage approach and undertone guidance
     - 🌙 **Undereye** — correction technique based on your dark circle type
