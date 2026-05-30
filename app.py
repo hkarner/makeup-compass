@@ -51,7 +51,7 @@ st.components.v1.html("""
     window.parent.scrollTo(0, 0);
 </script>
 """, height=0)
-st.title("🧭 Makeup Compass")
+st.image("assets/welcome_banner.png", use_container_width=True)
 st.divider()
 
 with st.form("quiz"):
