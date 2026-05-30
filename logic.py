@@ -8,7 +8,7 @@ from rules.mascara import get_mascara
 
 def build_profile(
     depth, undertone, eye_shape, contrast, lip_type, coverage, dark_circles,
-    deep_set_subtype="uniform", hooded_subtype="outer", dark_circle_location="everywhere",
+    deep_set_subtype="uniform", hooded_subtype="outer", dark_circle_location="everywhere", lid_discoloration="none",
     lash_curl="wavy", lash_color="dark", lash_density="average"
 ):
     """
@@ -19,6 +19,7 @@ def build_profile(
       deep_set_subtype:     "uniform" | "inner" | "outer"
       hooded_subtype:       "outer" | "full"
       dark_circle_location: "inner" | "full" | "outer" | "everywhere"
+      lid_discoloration: "none" | "partial" | "full"
 
     Lash params (from quiz Q8–Q10):
       lash_curl:    "straight" | "wavy" | "curly"
@@ -31,6 +32,7 @@ def build_profile(
             eye_shape, undertone, contrast,
             deep_set_subtype=deep_set_subtype,
             hooded_subtype=hooded_subtype,
+            lid_discoloration=lid_discoloration,
         ),
         "mascara": get_mascara(
             eye_shape=eye_shape,

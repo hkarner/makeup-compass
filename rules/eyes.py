@@ -1,4 +1,4 @@
-def get_eyes(eye_shape, undertone, contrast, deep_set_subtype="uniform", hooded_subtype="outer"):
+def get_eyes(eye_shape, undertone, contrast, deep_set_subtype="uniform", hooded_subtype="outer", lid_discoloration="none"):
 
     # ── Deep-set sub-type branching ──────────────────────────────────────────
     if eye_shape == "deep-set":
@@ -125,8 +125,32 @@ def get_eyes(eye_shape, undertone, contrast, deep_set_subtype="uniform", hooded_
     undertone_text = undertone_modifier.get(undertone, undertone_modifier["neutral"])
     contrast_text = contrast_modifier.get(contrast, contrast_modifier["medium"])
 
-    return (
+    result = (
         f"{shape_text}\n\n"
         f"**Shade direction:** {undertone_text}\n\n"
         f"**Intensity:** {contrast_text}"
     )
+
+    if lid_discoloration == "partial":
+        result += (
+            "\n\n**Lid discoloration (thin eyelid skin — often called dark circles):**\n"
+            "The discoloration at your inner corner and/or lid center is caused by thin skin over "
+            "blood vessels — not the same as undereye dark circles. "
+            "Apply a light press of peach/orange corrector (same product as your undereye step) "
+            "to the inner corner and lid center with your fingertip — one thin layer. "
+            "Then place your warm satin shimmer directly over it. "
+            "Skip matte powder on the lid — it deepens socket shadow on deep-set eyes."
+        )
+    elif lid_discoloration == "full":
+        result += (
+            "\n\n**Lid discoloration — full lid (thin eyelid skin, often called dark circles):**\n"
+            "Your eyelid skin is thin enough that blood vessels show through across the entire lid — "
+            "this reads as brownish or blue-gray discoloration and is consistently misidentified as dark circles. "
+            "Apply a thin press of peach/orange corrector (same product as your undereye step) "
+            "across your full upper lid with your fingertip before any other eye product. "
+            "Then place your warm shimmer at the inner corner and lid center as usual — "
+            "corrector and shimmer are two separate steps, using the same corrector across a larger zone. "
+            "Skip matte powder on the lid entirely — it absorbs light and deepens the socket shadow."
+        )
+
+    return result

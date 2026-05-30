@@ -244,6 +244,7 @@ if st.session_state.get("submitted"):
         deep_set_subtype = "uniform"
         hooded_subtype = "outer"
         dark_circle_location = "everywhere"
+        lid_discoloration = "none"
 
         if eye_shape_val == "deep-set":
             deep_set_subtype = st.radio(
@@ -281,10 +282,29 @@ if st.session_state.get("submitted"):
                 help="Check in natural light. Does the shadow concentrate near your nose, sit evenly, or sit more toward the outer corner?"
             )
 
+            lid_discoloration_answer = st.radio(
+                "Does the discoloration extend onto your eyelids as well?",
+                options=[
+                    "No — just under the eye",
+                    "Yes — partial (inner corner or center of lid only)",
+                    "Yes — full lid (most or all of the lid surface is affected)"
+                ],
+                help=(
+                    "This is often called 'really dark circles' but is actually thin skin "
+                    "over blood vessels on the lid surface — a different condition with a different fix."
+                )
+            )
+            lid_discoloration = (
+                "none" if lid_discoloration_answer.startswith("No")
+                else "partial" if "partial" in lid_discoloration_answer
+                else "full"
+            )
+
         if st.button("View My Results →", use_container_width=True):
             st.session_state["deep_set_subtype"] = deep_set_subtype
             st.session_state["hooded_subtype"] = hooded_subtype
             st.session_state["dark_circle_location"] = dark_circle_location
+            st.session_state["lid_discoloration"] = lid_discoloration
             st.session_state["subq_done"] = True
             st.rerun()
 
@@ -303,6 +323,7 @@ if st.session_state.get("submitted"):
             deep_set_subtype=st.session_state.get("deep_set_subtype", "uniform"),
             hooded_subtype=st.session_state.get("hooded_subtype", "outer"),
             dark_circle_location=st.session_state.get("dark_circle_location", "everywhere"),
+            lid_discoloration=st.session_state.get("lid_discoloration", "none"),
             lash_curl=inputs.get("lash_curl", "wavy"),
             lash_color=inputs.get("lash_color", "dark"),
             lash_density=inputs.get("lash_density", "average"),
