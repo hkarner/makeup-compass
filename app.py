@@ -492,4 +492,6 @@ You only need to paste it once per conversation. Save the file somewhere easy to
             mime="text/plain"
         )
 
-st.image("assets/creator_mark.png", width=200)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.image("assets/creator_mark.png", use_container_width=True)

@@ -1,9 +1,7 @@
 import streamlit as st
 
 def render_welcome():
-    st.image("assets/logo.png", width=280)
     st.image("assets/welcome_banner.png", use_container_width=True)
-    st.title("🧭 Makeup Compass")
 
     st.markdown("""
     If you've ever felt lost in the makeup aisle — overwhelmed by options,
@@ -57,3 +55,8 @@ def render_welcome():
     """)
 
     st.caption("Not sure what undertone or contrast means? Open the 📚 Makeup 101 tab in the sidebar before you start.")
+
+    st.divider()
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("assets/creator_mark.png", use_container_width=True)
