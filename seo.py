@@ -19,6 +19,18 @@ def set_page_meta():
             )
         }
     )
+    st.markdown(
+        """
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GQJGMF90VC"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-GQJGMF90VC');
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 def inject_jsonld():
