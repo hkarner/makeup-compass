@@ -1,6 +1,7 @@
 import streamlit as st
 
 def render_about():
+    st.image("assets/about_makeup_compass_banner.png", use_container_width=True)
     st.title("🧭 About Makeup Compass")
 
     st.markdown("""
