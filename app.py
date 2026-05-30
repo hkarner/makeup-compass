@@ -491,3 +491,5 @@ You only need to paste it once per conversation. Save the file somewhere easy to
             file_name="my_makeup_skill_page.txt",
             mime="text/plain"
         )
+
+st.image("assets/creator_mark.png", width=200)

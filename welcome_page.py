@@ -1,6 +1,8 @@
 import streamlit as st
 
 def render_welcome():
+    st.image("assets/logo.png", width=280)
+    st.image("assets/welcome_banner.png", use_container_width=True)
     st.title("🧭 Makeup Compass")
 
     st.markdown("""
